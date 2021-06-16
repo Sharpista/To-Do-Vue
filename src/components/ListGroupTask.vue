@@ -1,41 +1,45 @@
 <template>
-    <div>
-         <b-list-group horizontal="md" id="listGroup">
-            <b-list-group-item id="groupItem"><Task :task="task" ><slot></slot></Task></b-list-group-item>
-        </b-list-group>
-        
+    <div class="taskgrid">
+        <template v-if="tasks.length">
+            <Task v-for="(task, i) in tasks" :key="task.name"
+                @deleteTask="$emit('taskDeleted',i)"
+                :task="task"
+            ></Task>
+        </template>
+         <p v-else class="no-task">Sua vida está em dia :)</p>
     </div>
 </template>
 <script>
 import Task from './Task.vue'
-import barramento from '../barramento.js'
 export default {
     components:{
         Task,
+    },
+    props:{
+        tasks : {type : Array, required:true }
     },
     data() {
         return {
             task : 'vazio'
         }
     },
-    computed(){
-        barramento.onInputTask(tarefa =>{
-            this.task = tarefa
-        })
-    }
+    
+
+    
 }
 </script>
 <style>
-#listGroup{
-    display: flex;
-    background-color: transparent;
-    width: 300px;
+.task-grid {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
 }
-#groupItem{
-    background-color: transparent;
-    border: solid red;
-    display: inline-block;
-    margin: 5px;
+    .task-grid .task {
+        margin: 10px;
+    }
+.no-task {
+    color: #AAA;
+    font-size: 1.7rem;
 }
     
 </style>

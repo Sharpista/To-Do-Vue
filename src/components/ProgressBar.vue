@@ -1,39 +1,43 @@
 <template>
-<div id="div">
-    <b-progress :max="max" id='maximo'>
-      <b-progress-bar :value="value" :label="`${((value / max) * 100).toFixed(2)}%`" id='progresso'></b-progress-bar>
-    </b-progress>
-
-</div>
+    <div class="tasks-progress">
+        <span class="progress-value">{{ progress }}%</span>
+        <div class="progress-bar" :style="{width: progress + '%'}"></div>
+    </div>
 </template>
 
 <script>
 export default {
 
-   data() {
-       return {
-           value:30,
-           max:100
-       }
-   },
-
+   props:{
+       progress:{type: Number, default:0 }
+    }
 }
 </script>
 
 <style>
-    #div{
-        margin-bottom: 50px;
+  .tasks-progress {
+        position: relative;
+        width: 80%;
+        border: 1px solid #FFF;
+        color: #FFF;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
-    #progresso{
 
-        width: 400px;
-        height: 20px;
-        background: tomato;
+    .progress-bar {
+        position: absolute;
+        border-radius: 8px;
+        height: 100%;
+        background-color: #4CAF50;
+        align-self: flex-start;
     }
-    #maximo{
-        width: 400px;
-        height: 20px;
-        background-color: white;
+
+    .progress-value {
+        z-index: 1;
+        font-size: 1.5rem;
     }
 
 </style>

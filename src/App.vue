@@ -1,9 +1,11 @@
 <template>
 	<div id="app">
 		<h1>Tarefas</h1>
-		<ProgressBar></ProgressBar>
-		<NewTask></NewTask>
-		<ListGroupTask></ListGroupTask>
+		<ProgressBar :progress="progress"></ProgressBar>
+		<NewTask @taskAdded="addTask"></NewTask>
+		<ListGroupTask :tasks="tasks"
+			@deleteTask="deleteTask"
+		></ListGroupTask>
 	</div>
 </template>
 
@@ -15,7 +17,39 @@ export default {
 
 	components:{
 		ProgressBar, NewTask, ListGroupTask
-	}
+	},
+
+	data() {
+		return {
+			tasks :[]
+		}
+	},
+	computed: {
+		progress(){
+			const total = this.tasks.length
+			const done = this.tasks.filter(x => !x.pending).length
+			return Math.round(done/total * 100) || 0
+		}
+	},
+	methods: {
+		addTask(task){
+			const sameName = t => t.name == task.name
+			const reallyNew = this.tasks.filter(sameName).length == 0
+			if(reallyNew){
+				this.tasks.push({
+					name : task.name,
+					pending : task.pending || true
+
+				})
+			}
+		},
+		deleteTask(index){
+			this.tasks.splice(index,1)
+		},
+		toggleTaskStatus(index){
+			this.tasks[index].pending = !this.tasks[index].pending
+		}
+	},
 }
 </script>
 

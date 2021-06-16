@@ -1,26 +1,24 @@
 <template>
   <div id="div">
-    <b-form-input v-model="text" placeholder="Nova Tarefa" id="inputTask"></b-form-input>
-    <b-button variant="success" id='AddTask'  @click="setTask">+</b-button>
+    <b-form-input :model="name" placeholder="Nova Tarefa ?" id="inputTask"></b-form-input>
+    <b-button variant="success" id='AddTask'  @click="addTask">+</b-button>
   </div>
  
 </template>
 
 <script>
 
-import barramento from '../barramento.js'
 export default {
    
   data() {
     return {
-      text:''
+      name:''
     }
   },
    methods: {
-     
-     setTask(text){
-
-       barramento.setTask(text)
+     addTask(){
+      this.$emit('taskAdded',{name : this.name})
+      this.name = ''
        
     },
   },

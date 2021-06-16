@@ -3,11 +3,21 @@ const { default: Vue } = require("vue");
 export default new Vue({
 
     methods:{
-        setTask(task){
-            this.$emit('inputTask', task)
+        addTask(taskName){
+            this.$emit('taskAdded', taskName)
         },
-        onInputTask(callback){
-            this.$on('inputTask', callback)
+        onAddTask(callback){
+            this.$on('addTask', callback)
+        },
+        deleteTask(idTask){
+            this.$emit('deleteTask', idTask)
+        },
+        onDeleteTask(callback){
+            this.$emit('deleteTask', callback)
+        },
+        taskStateChange(task){
+            this.$emit('stateChaged', task)
         }
+
     }
 })
