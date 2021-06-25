@@ -1,25 +1,32 @@
 <template>
-     <div
-        class="task" :class="stateClass">
-        <span class="close">x</span>
-        <p>{{ task.name }}</p>
+    <div @click="$emit('taskStateChanged', task)"
+    class="task"
+    :class="stateClass">
+        <span 
+        @click.stop="$emit('taskDeleted', task)" 
+        class="close">X</span>
+        <p>{{task.name}}</p>
+
     </div>
 </template>
+
 <script>
 export default {
-    props :{
-        task : {type : Object, required:true}
+    props:{
+        task:{type: Object, required:true}
     },
-    data: function() {
-        return {
-            
-        }
-    },
-
+   computed:{
+       stateClass(){
+           return{
+               pending: this.task.pending,
+               done: !this.task.pending
+           }
+       }
+   }
 }
 </script>
 <style>
-    .task {
+    .task{
         position: relative;
         box-sizing: border-box;
         width: 350px;
@@ -34,31 +41,28 @@ export default {
         justify-content: center;
         align-items: center;
     }
-
-    .pending {
+    .pending{
         border-left: 12px solid #B73229;
-        background-color: #F44336;
+        background-color: #f44336;
     }
-
-    .done {
+    .done{
         color: #DDD;
-        border-left: 12px solid #0A8F08;
-        background-color: #4CAF50;
+        border-left: 12px solid #0a8f08;
+        background-color: #4caf50;
         text-decoration: line-through;
     }
+    .pending .close{
+        background: #B73229;
 
-    .pending .close {
-        background-color: #B73229;
     }
-
-    .done .close {
-        background-color: #0A8F08;
+    .done .close{
+        background-color: #0a8f08;
     }
-
-    .close {
+    .close{
+        color: #FFF;
         position: absolute;
         right: 10px;
-        top: 10px;
+        top:10px;
         font-size: 0.9rem;
         font-weight: 600;
         height: 20px;

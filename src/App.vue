@@ -1,55 +1,61 @@
 <template>
 	<div id="app">
 		<h1>Tarefas</h1>
-		<ProgressBar :progress="progress"></ProgressBar>
-		<NewTask @taskAdded="addTask"></NewTask>
-		<ListGroupTask :tasks="tasks"
-			@deleteTask="deleteTask"
-		></ListGroupTask>
+		<TaskProgress
+		:progress="progress">		
+		</TaskProgress>
+		<NewTask
+		@taskAdded="addTask">
+		</NewTask>
+		<Task-grid 
+		:tasks="tasks"
+		@taskDeleted="deleteTask"
+		@taskStateChanged="toggleTaskState"
+		>
+		</Task-grid>
 	</div>
 </template>
 
 <script>
-import ProgressBar from './components/ProgressBar.vue'
 import NewTask from './components/NewTask.vue'
-import ListGroupTask from './components/ListGroupTask.vue'
-export default {
+import TaskGrid from './components/TaskGrid.vue'
+import TaskProgress from './components/TaskProgress.vue'
 
-	components:{
-		ProgressBar, NewTask, ListGroupTask
-	},
+export default {
+  components: { TaskGrid, NewTask, TaskProgress },
 
 	data() {
 		return {
 			tasks :[]
 		}
 	},
-	computed: {
+	computed:{
 		progress(){
 			const total = this.tasks.length
-			const done = this.tasks.filter(x => !x.pending).length
-			return Math.round(done/total * 100) || 0
+			const done = this.tasks.filter(t => !t.pending).length
+
+			return Math.round(done / total * 100) || 0
 		}
 	},
 	methods: {
 		addTask(task){
-			const sameName = t => t.name == task.name
-			const reallyNew = this.tasks.filter(sameName).length == 0
+			const sameName  = t => t.name === task.name
+			const reallyNew = this.tasks.filter(sameName).length === 0
 			if(reallyNew){
 				this.tasks.push({
-					name : task.name,
-					pending : task.pending || true
-
+					name: task.name,
+					pending:task.pending || true
 				})
 			}
 		},
-		deleteTask(index){
-			this.tasks.splice(index,1)
+		deleteTask(i){
+			this.tasks.splice(i, 1)
 		},
-		toggleTaskStatus(index){
-			this.tasks[index].pending = !this.tasks[index].pending
+		toggleTaskState(i){
+			this.tasks[i].pending = !this.tasks[i].pending
 		}
 	},
+
 }
 </script>
 
